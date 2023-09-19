@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "activitypub-mincore"
+version = "0.1.0"
+description = ""
+authors = ["Steve Bate <svc-github@stevebate.net>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.103.1"
+httpx = "^0.25.0"
+uvicorn = "^0.23.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+mincore = "activitypub_mincore.support.cli:cli"
