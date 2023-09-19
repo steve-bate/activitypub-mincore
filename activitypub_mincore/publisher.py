@@ -34,6 +34,7 @@ async def post__inbox(request: fastapi.Request):
                             accept_response = await client.post(
                                 follower_inbox,
                                 json={
+                                    "@context": "https://www.w3.org/ns/activitystreams",
                                     # transient, so no id
                                     "type": "Accept",
                                     "actor": instance_actor["id"],
@@ -59,6 +60,7 @@ async def publish():
                 inboxes = list(_follower_inboxes)
                 logger.info(f"publishing to {inboxes}")
                 activity = {
+                    "@context": "https://www.w3.org/ns/activitystreams",
                     "type": "Create",
                     "actor": get_actor()["id"],
                     "object": {

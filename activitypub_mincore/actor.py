@@ -22,6 +22,7 @@ def initialize_actor(server: uvicorn.Server):
     global _actor
     url_prefix = f"http://{server.config.host}:{server.config.port}"
     _actor = {
+        "@context": "https://www.w3.org/ns/activitystreams",
         "id": f"{url_prefix}/actor",
         "type": "Service",
         "inbox": f"{url_prefix}/inbox",
