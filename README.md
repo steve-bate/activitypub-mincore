@@ -34,7 +34,7 @@ An AP Core instance MAY not have any authentication or authorization features.
 An instance MAY choose to not do `inbox` forwarding.
 
 
-# Discussion
+## Discussion
 
 Note that this document does *not* represent a proposal. It's a starting point (an intentionally relatively extreme one) for further discussion and exploring the core essence of the AP protocol.
 
