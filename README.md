@@ -19,6 +19,8 @@ The proposed AP Core requires a server to implement the following:
   * Activity publication
     * Must support `inbox` `Follow` activity processing
 
+Although `type` is constrained to a single value in this AP Core, a domain-specific interoperability profile MAY relax that constraint so that Activity Streams 2.0 JSON-LD extensions are supported in that context.
+
 In instance MAY have a nonoperational `outbox`. However, AP requires an `outbox` property on actors. The `outbox` endpoint MAY return an HTTP status of 403 Forbidden or 501 Not Implemented (or equivalent).
 
 An instance MAY not store any activities. An `inbox` GET MAY return an HTTP error status. 
@@ -31,9 +33,20 @@ An AP Core instance MAY not have any authentication or authorization features.
 
 An instance MAY choose to not do `inbox` forwarding.
 
-## Federation Limitations
 
-It should be clear that only implementing the AP Core will not result in an ActivityPub implementation that will federate with existing server implementation like Mastodon. For example, a partial list of additional functionality needed for federation with Mastodon includes:
+# Discussion
+
+Note that this document does *not* represent a proposal. It's a starting point (an intentionally relatively extreme one) for further discussion and exploring the core essence of the AP protocol.
+
+### Controversial Topics
+
+The single-valued `type` constraint has caused concern for some reviewers. The AP Core does not support JSON-LD extensibility. However, domain-specific interoperability profile may allow support for such extensibility. This Core definition doesn't prohibit that.
+
+(More topics to come, I'm sure...)
+
+### Federation Limitations
+
+It should be clear that only implementing the AP Core will not result in an ActivityPub implementation that will federate with existing server implementations like Mastodon. For example, a partial list of additional functionality needed for federation with Mastodon includes:
 
 * Webfinger support to convert Mastodon account identifiers to AP actor URIs
 * A specific version of HTTP Signatures to sign requests.
