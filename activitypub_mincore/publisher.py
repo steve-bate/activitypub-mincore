@@ -112,7 +112,7 @@ async def publish_once():
                 else:
                     logger.error(ex)
                 logger.warning(f"Removing {inbox_uri} from followers")
-                _followers.remove(inbox_uri)
+                _followers.pop(inbox_uri)
 
 
 async def publish():

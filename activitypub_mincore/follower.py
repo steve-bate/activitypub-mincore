@@ -1,5 +1,6 @@
 import asyncio
 import logging
+import uuid
 
 import fastapi
 import httpx
@@ -38,7 +39,7 @@ async def follow(uri_to_follow: str, *, ntries: int = 1):
                     response = await client.post(
                         remote_inbox,
                         json={
-                            "id": "",
+                            "id": f"{get_actor()['id']}/{uuid.uuid4()}",
                             "type": "Follow",
                             "actor": get_actor()["id"],
                             "object": uri_to_follow,
