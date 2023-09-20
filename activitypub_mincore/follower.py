@@ -1,6 +1,5 @@
 import asyncio
 import logging
-import os
 
 import fastapi
 import httpx
@@ -27,8 +26,8 @@ async def post__inbox(request: fastapi.Request):
         raise fastapi.HTTPException(500, "Internal Server Error")
 
 
-async def follow(uri_to_follow: str):
-    while True:
+async def follow(uri_to_follow: str, *, ntries: int = 1):
+    while ntries:
         logger.info(f"Requesting to Follow {uri_to_follow}")
         try:
             async with httpx.AsyncClient() as client:
@@ -50,8 +49,10 @@ async def follow(uri_to_follow: str):
                     logger.error(f"No inbox: {remote_actor}")
         except httpx.ConnectError:
             logging.warning("Connection failed, retrying...")
-            await asyncio.sleep(2)
-            continue
+            ntries -= 1
+            if ntries > 0:
+                await asyncio.sleep(2)
+                continue
         except Exception as ex:
             logger.exception(ex)
         break
@@ -61,4 +62,4 @@ async def send_follow(uri_to_follow: str, delay: int = 2):
     logger.info(f"Waiting to send follow for {uri_to_follow}")
     await asyncio.sleep(delay)
     logger.info(f"Sent Follow request for {uri_to_follow}")
-    await follow(uri_to_follow)
+    await follow(uri_to_follow, ntries=10000)

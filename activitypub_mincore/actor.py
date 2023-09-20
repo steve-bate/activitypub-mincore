@@ -1,4 +1,3 @@
-import uuid
 from typing import Any
 
 import uvicorn
@@ -8,7 +7,7 @@ from fastapi.responses import JSONResponse
 
 router = APIRouter()
 
-_actor = None
+_actor: dict = {}
 
 
 @router.get("/{path:path}")

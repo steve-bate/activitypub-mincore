@@ -52,35 +52,39 @@ async def post__inbox(request: fastapi.Request):
         raise fastapi.HTTPException(500, "Internal Server Error")
 
 
+async def publish_once():
+    if _follower_inboxes:
+        inboxes = list(_follower_inboxes)
+        logger.info(f"publishing to {inboxes}")
+        activity = {
+            # transient objects, no ids
+            "type": "Create",
+            "actor": get_actor()["id"],
+            "object": {
+                "type": "Note",
+                "content": f"The time is {datetime.now().isoformat()}",
+                "to": inboxes,
+            },
+        }
+        for inbox_uri in inboxes:
+            try:
+                async with httpx.AsyncClient() as client:
+                    response = await client.post(inbox_uri, json=activity)
+                    response.raise_for_status()
+            except Exception as ex:
+                # Remove follower if there is an error
+                if not isinstance(ex, httpx.ConnectError):
+                    logger.exception(ex)
+                else:
+                    logger.error(ex)
+                logger.warning(f"Removing {inbox_uri} from followers")
+                _follower_inboxes.remove(inbox_uri)
+
+
 async def publish():
     try:
         while True:
-            if _follower_inboxes:
-                inboxes = list(_follower_inboxes)
-                logger.info(f"publishing to {inboxes}")
-                activity = {
-                    # transient objects, no ids
-                    "type": "Create",
-                    "actor": get_actor()["id"],
-                    "object": {
-                        "type": "Note",
-                        "content": f"The time is {datetime.now().isoformat()}",
-                        "to": inboxes,
-                    },
-                }
-                for inbox_uri in inboxes:
-                    try:
-                        async with httpx.AsyncClient() as client:
-                            response = await client.post(inbox_uri, json=activity)
-                            response.raise_for_status()
-                    except Exception as ex:
-                        # Remove follower if there is an error
-                        if not isinstance(ex, httpx.ConnectError):
-                            logger.exception(ex)
-                        else:
-                            logger.error(ex)
-                        logger.warning(f"Removing {inbox_uri} from followers")
-                        _follower_inboxes.remove(inbox_uri)
+            await publish_once()
             await asyncio.sleep(5)
     except OSError as ex:
         logging.warning(ex)
