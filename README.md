@@ -12,7 +12,7 @@ The proposed AP Core requires a server to implement the following:
   * The actor MUST have at least the following properties: 
     * `id`     (MUST be valid for dereferencing)
     * `type`   (MUST be a single value)
-    * `inbox`  (MUST be operational, MAY be instance-level)
+    * `inbox`  (MUST be operational for HTTP POST, MAY be instance-level)
     * `outbox` (Required by AP, but MAY be nonoperational)
 * The instance MUST implement at least one of the following behaviors:
   * Incoming activity processing
