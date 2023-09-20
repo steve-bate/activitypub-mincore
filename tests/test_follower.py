@@ -14,6 +14,7 @@ def app():
 async def test_following(
     test_client: TestClient, mock_actor: dict, mock_server: MockServer
 ):
+    # trigger follow request
     await follow(mock_actor["id"])
     assert mock_server.received_post({"type": "Follow", "object": mock_actor["id"]})
     # simulate publication (smoke test)

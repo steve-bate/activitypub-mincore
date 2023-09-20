@@ -12,22 +12,22 @@ The proposed AP Core requires a server to implement the following:
   * The actor MUST have at least the following properties:
     * `id`     (MUST be valid for dereferencing)
     * `type`   (MUST be a single value)
-    * `inbox`  (MUST be operational for HTTP POST, MAY be instance-level)
+    * `inbox`  (MUST be operational for HTTP `POST`, MAY be instance-level)
     * `outbox` (Required by AP, but MAY be nonoperational)
 * The instance MUST implement at least one of the following behaviors:
   * Incoming activity processing
   * Activity publication
-    * Must support `inbox` `Follow` activity processing
+    * Must support `inbox` `Follow` and `Undo` activities.
 
 Although `type` is constrained to a single value in this AP Core, a domain-specific interoperability profile MAY relax that constraint so that Activity Streams 2.0 JSON-LD extensions are supported in that context.
 
 In instance MAY have a nonoperational `outbox`. However, AP requires an `outbox` property on actors. The `outbox` endpoint MAY return an HTTP status of 403 Forbidden or 501 Not Implemented (or equivalent).
 
-An instance MAY not store any activities. An `inbox` GET MAY return an HTTP error status.
+An instance MAY not store any activities. An `inbox` `GET` MAY return an HTTP error status.
 
-If an actor can be followed, it MUST be available for dereferencing.
+All AP Core actors MUST have URIs that can be dereferenced. In other words, they MUST be URLs (typically, HTTP/S) that can be used to retrieve the actor resource (the JSON document describing the actor).
 
-Other than `Follow` for activity publishers, an instance MAY process any subject (including none) of the Activity Streams 2.0 activities received in its `inbox`.
+Other than `Follow` and `Undo` for activity publishers, an instance MAY process any subject (including none) of the Activity Streams 2.0 activities received in its `inbox`.
 
 An AP Core instance MAY not have any authentication or authorization features.
 

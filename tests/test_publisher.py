@@ -34,7 +34,7 @@ async def test_follow_handling(
     # publish
     await publish_once()
     assert mock_server.received_post({"type": "Create"}), "No Create"
-    # TODO # unfollow
+    # # handle unfollow (Undo/Follow)
     # mock_server.requests.clear()
     # response = test_client.post(
     #     inbox,
