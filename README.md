@@ -9,7 +9,7 @@ This project is the result of a thought exercise into what a minimal core set of
 The proposed AP Core requires a server to implement the following:
 
 * The instance MUST implement at least one actor
-  * The actor MUST have at least the following properties: 
+  * The actor MUST have at least the following properties:
     * `id`     (MUST be valid for dereferencing)
     * `type`   (MUST be a single value)
     * `inbox`  (MUST be operational for HTTP POST, MAY be instance-level)
@@ -23,7 +23,7 @@ Although `type` is constrained to a single value in this AP Core, a domain-speci
 
 In instance MAY have a nonoperational `outbox`. However, AP requires an `outbox` property on actors. The `outbox` endpoint MAY return an HTTP status of 403 Forbidden or 501 Not Implemented (or equivalent).
 
-An instance MAY not store any activities. An `inbox` GET MAY return an HTTP error status. 
+An instance MAY not store any activities. An `inbox` GET MAY return an HTTP error status.
 
 If an actor can be followed, it MUST be available for dereferencing.
 
@@ -97,6 +97,16 @@ You can also run `poetry shell` and then just run the `mincore <subcommand>` at 
 
 The publisher will publish a `Create\Note` every five seconds to its followers. The publisher will `Accept` any `Follow` request. The followers list is not persistent and if there's an error communicating to a follower, that follower's inbox will be removed from the list.
 
-The consumer sends a `Follow` request to the publisher and just logs the incoming activities without doing any further processing of them. 
+The consumer sends a `Follow` request to the publisher and just logs the incoming activities without doing any further processing of them.
 
 Considering only the AP Core processing, without the exception handling boilerplate, there are about 50 lines of code total for the two instances.
+
+## Development
+
+The project is configured for pre-commit checks. To install the checks, run:
+
+```sh
+poetry run pre-commit install
+```
+
+If you're making temporary changes to the code and want to be sure you don't accidentally commit them, you can add a NO‎COMMIT string somewhere in the source code (a comment, for example). The related pre-commit check will detect this and prevent a commit.
