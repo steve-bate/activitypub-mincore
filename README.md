@@ -21,7 +21,7 @@ The proposed AP Core requires a server to implement the following:
 
 Although `type` is constrained to a single value in this AP Core, a domain-specific interoperability profile MAY relax that constraint so that Activity Streams 2.0 JSON-LD extensions are supported in that context.
 
-The `type` value MUST be one of: `Service` or `Person`. Interoperability profiles will generally extend this set of valid values, possibly including allowing arbitrary extensions to them.
+The `type` value MUST be one of: `Service`, `Person` or `Group`. Interoperability profiles will generally extend this set of valid values, possibly including allowing arbitrary extensions to them.
 
 In instance MAY have a nonoperational `outbox`. However, AP requires an `outbox` property on actors. The `outbox` endpoint MAY return an HTTP status of 403 Forbidden or 501 Not Implemented (or equivalent).
 
