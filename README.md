@@ -21,6 +21,8 @@ The proposed AP Core requires a server to implement the following:
 
 Although `type` is constrained to a single value in this AP Core, a domain-specific interoperability profile MAY relax that constraint so that Activity Streams 2.0 JSON-LD extensions are supported in that context.
 
+The `type` value MUST be one of: `Service` or `Person`. Interoperability profiles will generally extend this set of valid values, possibly including allowing arbitrary extensions to them.
+
 In instance MAY have a nonoperational `outbox`. However, AP requires an `outbox` property on actors. The `outbox` endpoint MAY return an HTTP status of 403 Forbidden or 501 Not Implemented (or equivalent).
 
 An instance MAY not store any activities. An `inbox` `GET` MAY return an HTTP error status.
@@ -38,13 +40,38 @@ An instance MAY choose to not do `inbox` forwarding.
 
 Note that this document does *not* represent a proposal. It's a starting point (an intentionally relatively extreme one) for further discussion and exploring the core essence of the AP protocol.
 
-### Controversial Topics
+### Single-valued Type
 
-The single-valued `type` constraint has caused concern for some reviewers. The AP Core does not support JSON-LD extensibility. However, domain-specific interoperability profile may allow support for such extensibility. This Core definition doesn't prohibit that.
+The single-valued `type` constraint has caused concern for some reviewers. The AP Core does not support JSON-LD extensibility. However, domain-specific interoperability profile may allow support for such extensibility. The AP Core definition doesn't prevent it.
 
-(More topics to come, I'm sure...)
+#### General Extensibility
 
-### Federation Limitations
+The ActivityPub specification allows activities to be processed as either JSON-LD or plain JSON. The AP Core only supports plain JSON. Therefore, there are no extensibility features defined for the AP Core.
+
+### Interoperability Profiles
+
+An interoperability profile (also sometimes called a "conformance profile" or a "compliance profile") is a type of specification that extends the AP Core for a specific problem domain or for cross-cutting functionality. These interoperability profiles can relax and extend the minimal core for specific purposes or social web domains, like microblogging.
+
+Examples:
+
+* Interoperability Profiles (layered on AP Core)
+  * Microblogging (Mastodon-flavored AP)
+  * Image sharing (probably based on PixelFed)
+  * Forums
+  * Marketplaces
+  * Long-form Writing
+  * Internet/Web of Things
+  * Distributed Moderation (cross-cutting)
+  * Activity Streaming (SSE, Websockets, etc. - cross-cutting)
+  * Full Linked Data Support (cross-cutting)
+  * Others . . .
+* AP Minimal Core (AP Core)
+
+In practice, I wouldn't expect any nontrivial server to only implement the AP Core. They'd implement one or more interoperability profiles. The work to define those has not been done yet. The current thinking (myself and others I've discussed this with) is that the interoperability profiles would be maintained by the developer communities implementing servers for those social web domains.
+
+Servers implementing different interoperability profiles are not expected to work together, but they may, to some extent, depending on the profiles.
+
+### Federation Limitations (especially Mastodon)
 
 It should be clear that only implementing the AP Core will not result in an ActivityPub implementation that will federate with existing server implementations like Mastodon. For example, a partial list of additional functionality needed for federation with Mastodon includes:
 
@@ -54,7 +81,6 @@ It should be clear that only implementing the AP Core will not result in an Acti
 
 Many microblogging servers mostly mimic the Mastodon-specific features for federation purposes. The requirements beyond the AP Core should be documented in a microblogging interoperability profile that overlaps with ActivityPub but defines specific variations for this social web domain.
 
-Similar interoperability profiles can (and should) be written for other social web domains (e.g, image sharing, forums, [insert your domain here]).
 
 ## Potential AP Core use cases
 
