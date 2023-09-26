@@ -1,0 +1,28 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "schema:object",
+    "description": "An Object. Restriction of https://www.w3.org/TR/activitystreams-core/#asobject",
+    "type": "object",
+    "definitions": {
+        "UriOrObject": {
+            "anyOf": [
+                {
+                    "type": "string",
+                    "format": "uri"
+                },
+                {
+                    "type": "object"
+                }
+            ]
+        }
+    },
+    "properties": {
+        "id": true,
+        "type": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "type"
+    ]
+}

@@ -19,7 +19,7 @@ class Server(uvicorn.Server):
         logging.getLogger("uvicorn.error").name = "uvicorn"
         super().__init__(config)
         self.background_tasks = background_tasks or []
-        self.tasks = []
+        self.tasks: list[asyncio.Task] = []
 
     def handle_exit(self, sig: int, frame) -> None:
         if self.tasks:

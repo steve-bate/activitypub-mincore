@@ -1,0 +1,40 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "schema:actor",
+    "$ref": "schema:object",
+    "description": "An Actor. https://www.w3.org/TR/activitystreams-core/#actors",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "string",
+            "format": "uri"
+        },
+        "type": {
+            "oneOf": [
+                {
+                    "const": "Person"
+                },
+                {
+                    "const": "Group"
+                },
+                {
+                    "const": "Service"
+                }
+            ]
+        },
+        "inbox": {
+            "type": "string",
+            "format": "uri"
+        },
+        "outbox": {
+            "type": "string",
+            "format": "uri"
+        }
+    },
+    "required": [
+        "id",
+        "type",
+        "inbox",
+        "outbox"
+    ]
+}

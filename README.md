@@ -44,6 +44,7 @@ Note that this document does *not* represent a proposal. It's a starting point (
 
 The single-valued `type` constraint has caused concern for some reviewers. The AP Core does not support JSON-LD extensibility. However, domain-specific interoperability profile may allow support for such extensibility. The AP Core definition doesn't prevent it.
 
+The `Application` type from AS2 is not included in AP Core because it's unclear how it is different from `Service`. The `Organization` type is not included because of it's similarity to `Group`.
 #### General Extensibility
 
 The ActivityPub specification allows activities to be processed as either JSON-LD or plain JSON. The AP Core only supports plain JSON. Therefore, there are no extensibility features defined for the AP Core.

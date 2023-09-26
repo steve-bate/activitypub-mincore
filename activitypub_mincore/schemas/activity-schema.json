@@ -1,0 +1,22 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "schema:activity",
+    "$ref": "schema:object",
+    "description": "An Activity. https://www.w3.org/TR/activitystreams-core/#activities",
+    "type": "object",
+    "properties": {
+        "actor": {
+            "type": "string",
+            "format": "uri"
+        },
+        "object": {
+            "$ref": "schema:object#/definitions/UriOrObject"
+        },
+        "type": {
+            "$ref": "schema:known-activities"
+        }
+    },
+    "required": [
+        "object"
+    ]
+}

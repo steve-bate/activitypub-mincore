@@ -5,16 +5,25 @@ import uuid
 import fastapi
 import httpx
 
-from activitypub_mincore.actor import get_actor
+from activitypub_mincore.actor import get_local_actor, get_remote_actor_inbox
+from activitypub_mincore.support.validation import (
+    MINCORE_ACTIVITY_TYPES,
+    create_activity_validator,
+    validate_activity,
+)
 
 logger = logging.getLogger("follower")
 
 app = fastapi.FastAPI()
 
+EXT_ACTIVITY_VALIDATOR = create_activity_validator(
+    types=MINCORE_ACTIVITY_TYPES + ["Create"]
+)
+
 
 @app.post("/{path:path}")
 async def post__inbox(request: fastapi.Request):
-    instance_actor = get_actor()
+    instance_actor = get_local_actor()
     if str(request.url) != instance_actor["inbox"]:
         raise fastapi.HTTPException(403, "Forbidden")
     try:
@@ -31,23 +40,23 @@ async def follow(uri_to_follow: str, *, ntries: int = 1):
     while ntries:
         logger.info(f"Requesting to Follow {uri_to_follow}")
         try:
+            remote_inbox = await get_remote_actor_inbox(uri_to_follow)
             async with httpx.AsyncClient() as client:
-                actor_response = await client.get(uri_to_follow)
-                remote_actor = actor_response.json()
-                remote_inbox = remote_actor.get("inbox")
-                if remote_inbox:
-                    response = await client.post(
-                        remote_inbox,
-                        json={
-                            "id": f"{get_actor()['id']}/{uuid.uuid4()}",
+                response = await client.post(
+                    remote_inbox,
+                    # "Pre-flight" validation
+                    json=validate_activity(
+                        {
+                            # Must have an id for the response
+                            "id": f"{get_local_actor()['id']}/{uuid.uuid4()}",
                             "type": "Follow",
-                            "actor": get_actor()["id"],
+                            "actor": get_local_actor()["id"],
                             "object": uri_to_follow,
                         },
-                    )
-                    response.raise_for_status()
-                else:
-                    logger.error(f"No inbox: {remote_actor}")
+                        EXT_ACTIVITY_VALIDATOR,
+                    ),
+                )
+                response.raise_for_status()
         except httpx.ConnectError:
             logging.warning("Connection failed, retrying...")
             ntries -= 1
