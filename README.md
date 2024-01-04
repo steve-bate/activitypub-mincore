@@ -1,5 +1,9 @@
 # ActivityPub Minimal Core (AP Core)
 
+> [!IMPORTANT]  
+> This is *not* a fork of the W3C ActivityPub recommendation. It's a conformant and restricted subset of it.
+> **It has no official status.** Please read the documentation (the Overview, at least) for more context.
+
 ## Overview
 
 This project is the result of a thought exercise into what a minimal core set of requirements would be for ActivityPub. The idea is that with this core set of requirements and domain-specific interoperability profiles (for microblogging, media sharing, social linking, etc.), we may be able to improve the current Fediverse developer experience and reduce the frustration associated with federation.
